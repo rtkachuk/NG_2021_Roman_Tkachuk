@@ -1,3 +1,8 @@
+# User defined
+bin/
+*.cbp
+*.depend
+
 # Prerequisites
 *.d
 
