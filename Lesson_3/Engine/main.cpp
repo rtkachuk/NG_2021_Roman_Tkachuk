@@ -59,6 +59,8 @@ int main()
     while (true) {
         system ("clear"); // system("cls"); for mustdie
 
+        // Update player map according to movement
+
         pMap[pPosY+1][pPosX] = gMap[pPosY+1][pPosX];
         pMap[pPosY-1][pPosX] = gMap[pPosY-1][pPosX];
         pMap[pPosY][pPosX+1] = gMap[pPosY][pPosX+1];
@@ -68,14 +70,23 @@ int main()
         pMap[pPosY+1][pPosX-1] = gMap[pPosY+1][pPosX-1];
         pMap[pPosY-1][pPosX-1] = gMap[pPosY-1][pPosX-1];
 
+        // Draw map on screen
+
         for (int y=0; y<wSizeY; y++) {
             for (int x=0; x<wSizeX; x++) {
+
+                // If player at this point - just place player
+
                 if (pPosX == x && pPosY == y) {
                     cout << "@";
                     continue;
                 }
+
+                // Check if there are chicken at this point
+                // (one of them)
+
                 bool chickenExists = false;
-                if (pMap[y][x] != '*') {
+                if (pMap[y][x] != '*') { // Actually, draw only if there is no fog
                     for (int chickenNumber=0; chickenNumber<chickensAmount; chickenNumber++)
                         if (chickensX[chickenNumber] == x &&
                             chickensY[chickenNumber] == y) {
@@ -87,6 +98,7 @@ int main()
                 if (chickenExists)
                     cout << "\e[93mc\e[39m";
                 else
+                    // Draw all other elements on screen if there any
                     switch(pMap[y][x]) {
                         case 't': cout << "\e[32mt\e[39m"; break;
                         case 's': cout << "\e[94ms\e[39m"; break;
@@ -95,8 +107,13 @@ int main()
             }
             cout << endl;
         }
+
+        // Ask player to make action
+
         cout << ">";
         cin >> pAction;
+
+        // Process player action (movement for current time)
 
         switch(pAction) {
             case 'w': if (gMap[pPosY-1][pPosX] == '.') pPosY--; break;
@@ -105,11 +122,13 @@ int main()
             case 'd': if (gMap[pPosY][pPosX+1] == '.') pPosX++; break;
         }
 
+        // Process chickens moves
+
         for (int chickenNumber=0; chickenNumber<chickensAmount; chickenNumber++) {
             int chickenPosY = chickensY[chickenNumber];
             int chickenPosX = chickensX[chickenNumber];
-            if (rand()%1 == 0) {
-                switch(rand()%4) {
+            if (rand()%1 == 0) { // Do chicken want to move?
+                switch(rand()%4) { // Where chicken want to move?
                     case 0: if (gMap[chickenPosY-1][chickenPosX] == '.') chickensY[chickenNumber]--; break;
                     case 1: if (gMap[chickenPosY+1][chickenPosX] == '.') chickensY[chickenNumber]++; break;
                     case 2: if (gMap[chickenPosY][chickenPosX-1] == '.') chickensX[chickenNumber]--; break;
