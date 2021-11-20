@@ -35,3 +35,8 @@ bin/
 *.exe
 *.out
 *.app
+
+# Qt
+*/build*
+*.pro.user
+*Makefile
