@@ -15,6 +15,8 @@ public:
 	Application(QWidget *parent = nullptr);
 	~Application();
 
+// Created by us (20, 21)
+
 private slots:
 	void calculateSpacebars();
 
